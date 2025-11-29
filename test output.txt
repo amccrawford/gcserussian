@@ -1,0 +1,145 @@
+
+--------------------------------------------------
+Context: Theme 1: Identity and culture -> Who am I? -> what makes a good friend
+Generating question...
+
+Examiner is speaking...
+Generating audio for: 'Как ты думаешь, что самое важное в дружбе? Расскаж...'
+Audio saved to: current_question.wav
+
+Press Enter to START recording...
+
+Recording... Press Enter to STOP recording.
+
+Audio saved to student_response.wav
+Recording stopped.
+
+Analyzing your response...
+
+==================== FEEDBACK ====================
+Examiner Question (Russian): Как ты думаешь, что самое важное в дружбе? Расскажи о моменте, когда ты понял/а, что у тебя очень хороший друг. Может быть, это было в прошлом марте, когда вы вместе поехали в кемпинг, или когда вы вместе пытались что-то выиграть?
+Examiner Question (English): What do you think is most important in friendship? Tell me about a moment when you realized you had a very good friend. Maybe it was last March when you went camping together, or when you tried to win something together?
+--------------------
+Your Response (Transcription): I don't know really what you're saying, because I don't speak Russian. That's a pity.
+Your Response (Translation):   I don't know really what you're saying, because I don't speak Russian. That's a pity.
+--------------------
+Score: 0/10
+Feedback: Unfortunately, you did not respond to the question in Russian. You explicitly stated in English, 'I don't know really what you're saying, because I don't speak Russian.' For a GCSE Russian speaking exam, it is essential to attempt to answer the questions in Russian, even if your vocabulary or grammar is limited. There was no Russian spoken in your response, so it's not possible to assess your communication, accuracy, or pronunciation in the target language. To improve, you would need to focus on acquiring basic Russian vocabulary related to common GCSE themes and practice forming simple sentences to convey your thoughts in Russian.
+==================================================
+
+Press Enter for another question, or type 'q' to quit:
+--------------------------------------------------
+Context: Theme 1: Identity and culture -> Daily life: customs and everyday life -> social media and technology (use of, advantages and disadvantages)
+Generating question...
+
+Examiner is speaking...
+Generating audio for: 'В нашем современном мире технологии, включая социа...'
+Audio saved to: current_question.wav
+
+Press Enter to START recording...
+
+Recording... Press Enter to STOP recording.
+
+Audio saved to student_response.wav
+Recording stopped.
+
+Analyzing your response...
+
+==================== FEEDBACK ====================
+Examiner Question (Russian): В нашем современном мире технологии, включая социальные сети, сильно изменили повседневную жизнь и культуру. Расскажите, пожалуйста, о своем опыте использования социальных сетей, их основных плюсах и минусах, и как вы думаете, влияют ли они на такие вещи, как чтение литературы или наше понимание других культур, например, культуры бельгийцев?
+Examiner Question (English): In our modern world, technologies, including social media, have greatly changed daily life and culture. Please tell me about your experience using social media, its main pros and cons, and how do you think they influence things like reading literature or our understanding of other cultures, for example, the culture of Belgians?
+--------------------
+Your Response (Transcription): Я думаю, это очень хорошо, потому что это здоровье для для здоровьем.
+Your Response (Translation):   I think it's very good, because it's health for for health.
+--------------------
+Score: 3/10
+Feedback: You started well with a clear opening, 'Я думаю, это очень хорошо'. However, your response was very brief and did not fully address the complex question asked about your experience with social media, its pros and cons, or its influence on reading and other cultures. To improve, focus on providing more detailed answers and engaging with all parts of the question. Grammatically, be careful with prepositions and cases; 'для здоровьем' should be 'для здоровья' (genitive case). Try to expand your vocabulary related to technology, culture, and personal experiences to articulate more complex ideas. Practice speaking more fluently to avoid repetition and hesitation.
+==================================================
+
+
+--------------------------------------------------
+Context: Theme 2: Local area, holiday and travel -> Holidays: preferences -> destinations
+Generating question...
+
+Examiner is speaking...
+Generating audio for: 'Если бы у тебя была возможность спланировать идеал...'
+Audio saved to: current_question.wav
+
+Press Enter to START recording...
+
+Recording... Press Enter to STOP recording.
+
+Audio saved to student_response.wav
+Recording stopped.
+
+Analyzing your response...
+
+==================== FEEDBACK ====================
+Examiner Question (Russian): Если бы у тебя была возможность спланировать идеальное путешествие, что бы ты сделал в начале, и есть ли направления, куда ты не против поехать?
+Examiner Question (English): If you had the opportunity to plan an ideal trip, what would you do first, and are there any destinations you wouldn't mind going to?
+--------------------
+Your Response (Transcription): А-а, я думаю, а-а, ходить в, а-ам, достопримечательности, это очень важно, потому что это, а-ам, хорошая для здоровья. А-а, в, а-а, в будущем, я буду ходить, а-ам, в Испанию, а-ам, и я буду, а-а, слушать музыку и собирать марки.
+Your Response (Translation):   Uh, I think, uh, to go into, um, attractions, it's very important, because it's, um, good for health. Uh, in, uh, in the future, I will go, um, to Spain, um, and I will, uh, listen to music and collect stamps.
+--------------------
+Score: 4/10
+Feedback: You've understood the question well and attempted to answer both parts, using some relevant vocabulary such as "достопримечательности" (attractions) and correctly forming the basic future tense. Your pronunciation of individual words is generally clear. To improve, focus on grammatical accuracy, especially verb usage and cases. For example, instead of "ходить в достопримечательности," it's more natural to say "посещать достопримечательности" (to visit attractions) or "ходить по достопримечательностям" (to walk around attractions, using the dative case). Also, "хорошая для здоровья" should be "хорошо для здоровья" (good for health) as "хорошо" is an adverb here. For travelling to a country, "поехать" (to go by transport) or "путешествовать" (to travel) would be more suitable than "ходить." Try to expand your answers with more detail to make your communication more fluent.
+==================================================
+
+
+
+--------------------------------------------------
+Context: Theme 3: School -> School activities: school trips -> events and exchanges
+Generating question...
+
+Examiner is speaking...
+Generating audio for: 'Влиял ли какой-нибудь вирус на ваши школьные поезд...'
+Audio saved to: current_question.wav
+
+Press Enter to START recording...
+
+Recording... Press Enter to STOP recording.
+
+Audio saved to student_response.wav
+Recording stopped.
+
+Analyzing your response...
+
+==================== FEEDBACK ====================
+Examiner Question (Russian): Влиял ли какой-нибудь вирус на ваши школьные поездки или планы об обменах? Расскажите об этом.
+Examiner Question (English): Did any virus affect your school trips or exchange plans? Tell me about it.
+--------------------
+Your Response (Transcription): В прошлом году, а-а, я поехала, а-а, в Италию, в итальянскую школу, в итальянскую школу, а-а, потому что, а-а, мы с друзьями, а-а, ха-ха-хотим, а-а, жить в Италию, а-а, в будущем. А-а, но, а-а, мои родители не хотят, а-а, чтобы я, а-а, жила, а-а, в Италию, потому что они, они предпочитали, а-а, они, а-а, пред-пред-предпочитали, а-а, я, я жить в английский и, а-а, и учиться с-с в университете. Да.
+Your Response (Translation):   Last year, um, I went, um, to Italy, to an Italian school, to an Italian school, um, because, um, my friends and I, um, want to, um, live in Italy, um, in the future. Um, but, um, my parents don't want, um, me to, um, live, um, in Italy, because they, they preferred, um, they, um, preferred, um, me to live in English (England) and, um, and study at university. Yes.
+--------------------
+Score: 5/10
+Feedback: You made a good attempt to answer the question, speaking for a reasonable duration and using some relevant vocabulary like 'в прошлом году', 'родители', and 'в будущем'. You also tried to use more complex structures with 'чтобы'. However, it's crucial to address all parts of the question – you missed the key element about a 'virus' affecting your plans. Grammatically, there are frequent errors, particularly with case usage (e.g., 'жить в Италию' should be 'жить в Италии') and verb tenses ('предпочитали' should be 'предпочитают' for a current preference). Your sentence structure also needs work (e.g., 'я жить в английский' should be 'чтобы я жила в Англии'). Pronunciation is mostly understandable but shows hesitations and non-native sounds. Focus on listening carefully to the entire question, improving your grammatical accuracy, and practicing smoother delivery to enhance fluency.
+==================================================
+
+Press Enter for another question, or type 'q' to quit:
+--------------------------------------------------
+Context: Theme 1: Identity and culture -> Cultural life: celebrations and festivals -> reading
+Generating question...
+
+Examiner is speaking...
+Generating audio for: 'Что ты можешь сказать о том, что ты читал про русс...'
+Audio saved to: current_question.wav
+
+Press Enter to START recording...
+
+Recording... Press Enter to STOP recording.
+
+Audio saved to student_response.wav
+Recording stopped.
+
+Analyzing your response...
+
+==================== FEEDBACK ====================
+Examiner Question (Russian): Что ты можешь сказать о том, что ты читал про русские праздники?
+Examiner Question (English): What can you say about what you've read about Russian holidays?
+--------------------
+Your Response (Transcription): Я не знаю.
+Your Response (Translation):   I don't know.
+--------------------
+Score: 1/10
+Feedback: Your pronunciation of 'Я не знаю' was clear and easy to understand, and the phrase itself is grammatically correct. However, this response does not answer the question posed. In an exam, it is crucial to attempt to respond to the prompt, even if you only know a few words related to the topic. Try to recall any vocabulary or simple sentences you might have learned about Russian holidays to demonstrate your knowledge and ability to communicate in Russian.
+==================================================

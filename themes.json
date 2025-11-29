@@ -1,0 +1,127 @@
+[
+    {
+        "theme": "Theme 1: Identity and culture",
+        "topics": [
+            {
+                "name": "Who am I?",
+                "subtopics": [
+                    "relationships",
+                    "when I was younger",
+                    "what my friends and family are like",
+                    "what makes a good friend",
+                    "interests",
+                    "socialising with friends and family",
+                    "role models"
+                ]
+            },
+            {
+                "name": "Daily life: customs and everyday life",
+                "subtopics": [
+                    "food and drink",
+                    "shopping",
+                    "social media and technology (use of, advantages and disadvantages)"
+                ]
+            },
+            {
+                "name": "Cultural life: celebrations and festivals",
+                "subtopics": [
+                    "reading",
+                    "music",
+                    "sport",
+                    "film and television"
+                ]
+            }
+        ]
+    },
+    {
+        "theme": "Theme 2: Local area, holiday and travel",
+        "topics": [
+            {
+                "name": "Holidays: preferences",
+                "subtopics": [
+                    "experiences",
+                    "destinations"
+                ]
+            },
+            {
+                "name": "Travel and tourist transactions: travel and accommodation",
+                "subtopics": [
+                    "asking for help and dealing with problems",
+                    "directions",
+                    "eating out",
+                    "shopping"
+                ]
+            },
+            {
+                "name": "Town, region and country: weather",
+                "subtopics": [
+                    "places to see",
+                    "things to do"
+                ]
+            }
+        ]
+    },
+    {
+        "theme": "Theme 3: School",
+        "topics": [
+            {
+                "name": "What school is like: school types",
+                "subtopics": [
+                    "school day",
+                    "subjects",
+                    "rules and pressures",
+                    "celebrating success"
+                ]
+            },
+            {
+                "name": "School activities: school trips",
+                "subtopics": [
+                    "events and exchanges"
+                ]
+            }
+        ]
+    },
+    {
+        "theme": "Theme 4: Future aspirations, study and work",
+        "topics": [
+            {
+                "name": "Using languages beyond the classroom: forming relationships",
+                "subtopics": [
+                    "travel",
+                    "employment"
+                ]
+            },
+            {
+                "name": "Ambitions: further study",
+                "subtopics": [
+                    "volunteering",
+                    "training"
+                ]
+            },
+            {
+                "name": "Work: jobs",
+                "subtopics": [
+                    "careers and professions"
+                ]
+            }
+        ]
+    },
+    {
+        "theme": "Theme 5: International and global dimension",
+        "topics": [
+            {
+                "name": "Bringing the world together: sports events",
+                "subtopics": [
+                    "music events",
+                    "campaigns and good causes"
+                ]
+            },
+            {
+                "name": "Environmental issues: being ‘green’",
+                "subtopics": [
+                    "access to natural resources"
+                ]
+            }
+        ]
+    }
+]
