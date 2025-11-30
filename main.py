@@ -1,8 +1,10 @@
 import os
 import sys
+import random
 import sounddevice as sd
 import soundfile as sf
 import json
+import time
 from data_loaders import ThemeLoader, VocabularyLoader
 from question_generator import QuestionGenerator
 from tts_module import TTSGenerator
@@ -19,13 +21,12 @@ def play_audio(file_path):
         print(f"Error playing audio: {e}")
 
 def main():
-    print("Initializing GCSE Language Testing App...")
+    print("Initializing GCSE Language Testing App (CLI Version)...")
 
     # Initialize modules
     try:
         theme_loader = ThemeLoader("themes.json")
         vocab_loader = VocabularyLoader("vocab.json")
-        # Explicitly using gemini-2.5-flash as requested
         question_gen = QuestionGenerator(model_name="gemini-2.5-flash")
         tts_gen = TTSGenerator(model_name="gemini-2.5-flash-preview-tts")
         recorder = AudioRecorder()
@@ -39,34 +40,47 @@ def main():
     while True:
         print("-" * 50)
         # 1. Context Selection
-        theme, topic, subtopic = theme_loader.get_random_theme_topic_subtopic()
+        theme, topic, subtopic, topic_data = theme_loader.get_random_theme_topic_subtopic()
         print(f"Context: {theme} -> {topic} -> {subtopic}")
 
         # 2. Vocabulary Selection
-        # Simple logic: just pick random words for now to seed the prompt
-        # Improvement: Filter vocab by category matches in topic name
-        vocab_subset = vocab_loader.get_random_words(3)
-        
+        vocab_subset = vocab_loader.get_contextual_words(
+            theme, topic, subtopic, topic_data=topic_data, count=5
+        )
+        # print(f"Target Vocabulary: {[v['russian'] for v in vocab_subset]}") 
+
         # 3. Generate Question
         print("Generating question...")
-        question_text = question_gen.generate_question(
-            theme=theme, 
-            topic=topic, 
-            subtopic=subtopic, 
-            language="Russian",
-            vocabulary=vocab_subset
-        )
+        try:
+            question_text = question_gen.generate_question(
+                theme=theme, 
+                topic=topic, 
+                subtopic=subtopic, 
+                language="Russian",
+                vocabulary=vocab_subset,
+                difficulty_level="easy" # Default to easy for now
+            )
+        except Exception as e:
+            print(f"Error generating question: {e}")
+            continue
         
         if not question_text:
             print("Failed to generate question. Retrying...")
             continue
 
         # 4. TTS & Playback
-        print("\nExaminer is speaking...")
+        voices = ["Puck", "Charon", "Kore", "Fenrir", "Aoede", "Zephyr"]
+        selected_voice = random.choice(voices)
+        print(f"\nExaminer ({selected_voice}) is speaking...")
         audio_file = "current_question.wav"
-        if tts_gen.generate_audio(question_text, audio_file, voice_name="Zephyr"):
+        
+        try:
+            audio_bytes = tts_gen.generate_audio(question_text, voice_name=selected_voice)
+            with open(audio_file, "wb") as f:
+                f.write(audio_bytes)
             play_audio(audio_file)
-        else:
+        except Exception as e:
+            print(f"TTS Error: {e}")
             print(f"Examiner (Text only): {question_text}")
 
         # Interaction Menu Loop
@@ -75,8 +89,10 @@ def main():
             print("1. Hear question again")
             print("2. See question text")
             print("3. Answer (Record)")
+            print("4. Skip this question")
+            print("q. Quit")
             
-            choice = input("Select an option (1-3): ").strip()
+            choice = input("Select an option: ").strip().lower()
             
             if choice == '1':
                 print("\nReplaying audio...")
@@ -85,8 +101,17 @@ def main():
                 print(f"\nQuestion: {question_text}")
             elif choice == '3':
                 break
+            elif choice == '4':
+                print("Skipping...")
+                break # Breaks inner loop, effectively skipping to next iteration of outer loop
+            elif choice == 'q':
+                print("Exiting session.")
+                sys.exit(0)
             else:
                 print("Invalid option. Please try again.")
+        
+        if choice == '4':
+            continue
 
         # 5. Student Response
         response_file = "student_response.wav"
@@ -117,11 +142,7 @@ def main():
             print("="*50)
 
         # 8. Loop
-        choice = input("\nPress Enter for another question, or type 'q' to quit: ")
-        if choice.lower() == 'q':
-            break
-
-    print("Session ended.")
+        input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     main()
