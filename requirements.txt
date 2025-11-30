@@ -1,7 +1,9 @@
-google-generativeai
+google-genai
 sounddevice
 soundfile
-pydub
 python-dotenv
 numpy
-google-genai
+sqlalchemy
+bcrypt
+streamlit
+streamlit_audiorecorder

@@ -1,5 +1,6 @@
 import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 import json
 
@@ -12,8 +13,8 @@ class ResponseAnalyzer:
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables.")
         
-        genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel(model_name)
+        self.client = genai.Client(api_key=self.api_key)
+        self.model_name = model_name
 
     def analyze_response(self, original_question, theme_context, audio_file_path, target_language="Russian"):
         """
@@ -22,11 +23,12 @@ class ResponseAnalyzer:
         if not os.path.exists(audio_file_path):
             return {"error": "Audio file not found."}
 
-        # Upload the audio file
+        # Read audio file bytes
         try:
-            uploaded_audio = genai.upload_file(path=audio_file_path, mime_type="audio/wav")
+            with open(audio_file_path, "rb") as f:
+                audio_bytes = f.read()
         except Exception as e:
-            return {"error": f"Failed to upload audio: {e}"}
+            return {"error": f"Failed to read audio file: {e}"}
 
         prompt = f"""
         You are an expert GCSE {target_language} examiner. You have just asked a student the following question:
@@ -39,7 +41,8 @@ class ResponseAnalyzer:
         Please perform the following analysis and output the result in strictly valid JSON format with the following keys:
         
         1.  "original_question_english": Translate the original question into English.
-        2.  "transcription": Transcribe the student's audio response exactly as spoken in {target_language}.
+        2.  "transcription": Transcribe the student's audio response exactly as spoken in {target_language}. If it is not spoken in 
+        {target_language}, transcribe it in the language spoken.
         3.  "translation": Translate the student's response into English.
         4.  "score": A score out of 10 (integer) based on GCSE speaking criteria (Communication, Accuracy, Pronunciation).
         5.  "feedback": A concise paragraph giving constructive feedback. Mention what was good and what could be improved (grammar, vocabulary, pronunciation).
@@ -48,8 +51,23 @@ class ResponseAnalyzer:
         """
 
         try:
-            result = self.model.generate_content([prompt, uploaded_audio])
-            response_text = result.text.strip()
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part.from_text(text=prompt),
+                            types.Part.from_bytes(
+                                data=audio_bytes,
+                                mime_type="audio/wav"
+                            )
+                        ]
+                    )
+                ]
+            )
+            
+            response_text = response.text.strip()
             
             # Clean up potential markdown formatting (```json ... ```)
             if response_text.startswith("```json"):
@@ -60,8 +78,6 @@ class ResponseAnalyzer:
             return json.loads(response_text)
 
         except json.JSONDecodeError:
-            print("Error: Could not decode JSON from LLM response.")
-            print(f"Raw response: {response_text}")
             return {"error": "JSON parsing failed", "raw_text": response_text}
         except Exception as e:
             return {"error": f"Analysis failed: {e}"}

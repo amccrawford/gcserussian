@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -11,10 +11,10 @@ class QuestionGenerator:
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables.")
         
-        genai.configure(api_key=self.api_key)
-        self.model = genai.GenerativeModel(model_name)
+        self.client = genai.Client(api_key=self.api_key)
+        self.model_name = model_name
 
-    def generate_question(self, theme, topic, subtopic=None, language="Russian", vocabulary=None):
+    def generate_question(self, theme, topic, subtopic=None, language="Russian", vocabulary=None, difficulty_level="easy"):
         """
         Generates a GCSE-style oral exam question based on the provided context. 
         
@@ -24,6 +24,7 @@ class QuestionGenerator:
             subtopic (str, optional): A more specific subtopic.
             language (str): Target language (default: Russian).
             vocabulary (list, optional): A list of vocabulary words to potentially include.
+            difficulty_level (str): Difficulty of the question (easy, medium, hard).
 
         Returns:
             str: The generated question in the target language.
@@ -37,8 +38,6 @@ class QuestionGenerator:
         if vocabulary:
             vocab_list_str = ", ".join([v['russian'] for v in vocabulary])
             vocab_instruction = f"Try to incorporate one or more of the following words/phrases naturally if possible: {vocab_list_str}."
-
-        difficulty_level = "easy"  # Can be adjusted or made dynamic if needed
         
         prompt = f"""
         You are a GCSE {language} examiner conducting a speaking exam.
@@ -61,11 +60,13 @@ class QuestionGenerator:
         """
 
         try:
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt
+            )
             return response.text.strip()
         except Exception as e:
-            print(f"Error generating question: {e}")
-            return None
+            raise RuntimeError(f"Error generating question: {e}")
 
 if __name__ == "__main__":
     # Test the generator
