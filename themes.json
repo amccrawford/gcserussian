@@ -12,6 +12,12 @@
                     "interests",
                     "socialising with friends and family",
                     "role models"
+                ],
+                "vocab_categories": [
+                    "Identity and culture: what my friends and family are like - Words on relations, relationships, personal and physical characteristics",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Time expressions"
                 ]
             },
             {
@@ -20,6 +26,14 @@
                     "food and drink",
                     "shopping",
                     "social media and technology (use of, advantages and disadvantages)"
+                ],
+                "vocab_categories": [
+                    "Identity and culture: daily life, food and drink, including eating out",
+                    "Identity and culture: using social media",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Time expressions",
+                    "Some useful connecting words"
                 ]
             },
             {
@@ -29,6 +43,14 @@
                     "music",
                     "sport",
                     "film and television"
+                ],
+                "vocab_categories": [
+                    "Identity and culture: cultural life",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Time expressions",
+                    "Months and seasons of the year",
+                    "Days of the week"
                 ]
             }
         ]
@@ -41,6 +63,14 @@
                 "subtopics": [
                     "experiences",
                     "destinations"
+                ],
+                "vocab_categories": [
+                    "Local area, holiday and travel",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Countries",
+                    "Areas/mountains/seas/places",
+                    "Phrases associated with weather"
                 ]
             },
             {
@@ -50,6 +80,14 @@
                     "directions",
                     "eating out",
                     "shopping"
+                ],
+                "vocab_categories": [
+                    "Local area, holiday and travel",
+                    "Dealing with problems",
+                    "Asking for directions",
+                    "Identity and culture: daily life, food and drink, including eating out",
+                    "Common verbs",
+                    "Numbers"
                 ]
             },
             {
@@ -57,6 +95,13 @@
                 "subtopics": [
                     "places to see",
                     "things to do"
+                ],
+                "vocab_categories": [
+                    "Local area, holiday and travel",
+                    "Phrases associated with weather",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Areas/mountains/seas/places"
                 ]
             }
         ]
@@ -71,12 +116,27 @@
                     "subjects",
                     "rules and pressures",
                     "celebrating success"
+                ],
+                "vocab_categories": [
+                    "School",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Time expressions",
+                    "Times of day"
                 ]
             },
             {
                 "name": "School activities: school trips",
                 "subtopics": [
                     "events and exchanges"
+                ],
+                "vocab_categories": [
+                    "School",
+                    "Local area, holiday and travel",
+                    "Common verbs",
+                    "Time expressions",
+                    "Identity and culture: cultural life",
+                    "International and global dimension: bringing the world together, environmental issues"
                 ]
             }
         ]
@@ -89,6 +149,14 @@
                 "subtopics": [
                     "travel",
                     "employment"
+                ],
+                "vocab_categories": [
+                    "Future aspirations, study and work",
+                    "Local area, holiday and travel",
+                    "Identity and culture: what my friends and family are like - Words on relations, relationships, personal and physical characteristics",
+                    "Countries",
+                    "Nationalities",
+                    "Language used in dialogues and messages"
                 ]
             },
             {
@@ -96,12 +164,28 @@
                 "subtopics": [
                     "volunteering",
                     "training"
+                ],
+                "vocab_categories": [
+                    "Future aspirations, study and work",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Time expressions",
+                    "Some useful connecting words",
+                    "Other high-frequency words"
                 ]
             },
             {
                 "name": "Work: jobs",
                 "subtopics": [
                     "careers and professions"
+                ],
+                "vocab_categories": [
+                    "Future aspirations, study and work",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Common adverbs",
+                    "Time expressions",
+                    "Question words"
                 ]
             }
         ]
@@ -114,12 +198,28 @@
                 "subtopics": [
                     "music events",
                     "campaigns and good causes"
+                ],
+                "vocab_categories": [
+                    "International and global dimension: bringing the world together, environmental issues",
+                    "Countries",
+                    "Continents",
+                    "Nationalities",
+                    "Local area, holiday and travel",
+                    "Time expressions"
                 ]
             },
             {
                 "name": "Environmental issues: being ‘green’",
                 "subtopics": [
                     "access to natural resources"
+                ],
+                "vocab_categories": [
+                    "International and global dimension: bringing the world together, environmental issues",
+                    "Common verbs",
+                    "Common adjectives",
+                    "Some useful connecting words",
+                    "Quantities and measures",
+                    "Countries"
                 ]
             }
         ]

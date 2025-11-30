@@ -7,3 +7,4 @@ sqlalchemy
 bcrypt
 streamlit
 streamlit_audiorecorder
+psycopg2-binary

@@ -1,0 +1,8 @@
+fastapi
+google-generativeai
+passlib[bcrypt]
+pydub
+python-jose[cryptography]
+python-multipart
+sqlalchemy
+uvicorn

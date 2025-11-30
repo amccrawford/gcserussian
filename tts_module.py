@@ -69,9 +69,9 @@ class TTSGenerator:
         )
         return header + audio_data
 
-    def generate_audio(self, text, output_filename, voice_name="Zephyr"):
+    def generate_audio(self, text, voice_name="Zephyr"):
         """
-        Generates audio from text and saves it to a file.
+        Generates audio from text and returns it as bytes.
         """
         contents = [
             types.Content(
@@ -94,8 +94,6 @@ class TTSGenerator:
             ),
         )
 
-        print(f"Generating audio for: '{text[:50]}...'")
-        
         all_audio_data = b""
         mime_type = None
 
@@ -118,34 +116,24 @@ class TTSGenerator:
                             mime_type = part.inline_data.mime_type
 
             if all_audio_data:
-                # If raw PCM, wrap in WAV container
-                # The template implies the output might be raw PCM based on the need for convert_to_wav
-                # But mimetypes.guess_extension check suggests it might sometimes differ.
-                # We'll stick to the template logic: if we can't guess extension or it is raw, convert.
-                
-                # Note: The template converts if extension is None. 
-                # Let's default to ensuring it is a playable WAV.
-                
                 if mime_type and "wav" not in mime_type:
                      final_audio = self._convert_to_wav(all_audio_data, mime_type if mime_type else "audio/L16;rate=24000")
                 else:
                      final_audio = all_audio_data
 
-                with open(output_filename, "wb") as f:
-                    f.write(final_audio)
-                print(f"Audio saved to: {output_filename}")
-                return output_filename
+                return final_audio
             else:
-                print("No audio data received.")
-                return None
+                raise RuntimeError("No audio data received from TTS service.")
 
         except Exception as e:
-            print(f"Error during TTS generation: {e}")
-            return None
+            raise RuntimeError(f"Error during TTS generation: {e}")
 
 if __name__ == "__main__":
     # Test the TTS Generator
     tts = TTSGenerator()
-    test_text = "Расскажи мне о своем типичном завтраке. Почему, по-твоему, завтрак важен для здоровья, \
-        и какие еще фрукты, кроме яблока, ты бы ел(а) на завтрак?"
-    tts.generate_audio(test_text, "test_output.wav")
+    test_text = "Привет! Как дела?"
+    try:
+        audio = tts.generate_audio(test_text)
+        print(f"Generated {len(audio)} bytes of audio.")
+    except Exception as e:
+        print(e)

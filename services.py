@@ -2,10 +2,15 @@ import os
 import random
 import json
 import tempfile
+from sqlalchemy.orm import Session
+from database import SessionLocal
+from models import User, Session as DBSession, Result
+from auth_utils import verify_password
 from data_loaders import ThemeLoader, VocabularyLoader
 from question_generator import QuestionGenerator
 from tts_module import TTSGenerator
 from analysis_module import ResponseAnalyzer
+from datetime import datetime
 
 class GameEngine:
     def __init__(self):
@@ -14,8 +19,98 @@ class GameEngine:
         self.question_gen = QuestionGenerator(model_name="gemini-2.5-flash")
         self.tts_gen = TTSGenerator(model_name="gemini-2.5-flash-preview-tts")
         self.analyzer = ResponseAnalyzer(model_name="gemini-2.5-flash")
-        self.available_voices = ["Puck", "Charon", "Kore", "Fenrir", "Aoede", "Zephyr"] # Moved from main.py
+        self.available_voices = ["Puck", "Charon", "Kore", "Fenrir", "Aoede", "Zephyr"] 
 
+    # --- Authentication & User Management ---
+    def login_user(self, username, password):
+        """
+        Authenticates a user.
+        Returns the User object if successful, None otherwise.
+        """
+        db = SessionLocal()
+        try:
+            user = db.query(User).filter(User.username == username).first()
+            if not user:
+                return None
+            if not verify_password(password, user.hashed_password):
+                return None
+            return user
+        finally:
+            db.close()
+
+    def get_user_stats(self, user_id):
+        """
+        Retrieves basic statistics for the user dashboard.
+        """
+        db = SessionLocal()
+        try:
+            total_sessions = db.query(DBSession).filter(DBSession.user_id == user_id).count()
+            
+            # Calculate average score
+            results = db.query(Result).join(DBSession).filter(DBSession.user_id == user_id).all()
+            total_score = sum([r.score for r in results])
+            avg_score = round(total_score / len(results), 1) if results else 0
+            
+            # Recent history
+            history = []
+            recent_results = db.query(Result).join(DBSession).filter(DBSession.user_id == user_id).order_by(DBSession.timestamp.desc()).limit(5).all()
+            for res in recent_results:
+                history.append({
+                    "date": res.session.timestamp.strftime("%Y-%m-%d %H:%M"),
+                    "topic": res.session.topic,
+                    "score": res.score
+                })
+
+            return {
+                "total_sessions": total_sessions,
+                "average_score": avg_score,
+                "recent_history": history
+            }
+        finally:
+            db.close()
+
+    def save_exam_result(self, user_id, question_data, analysis_result):
+        """
+        Saves the completed exam interaction to the database.
+        """
+        if "error" in analysis_result:
+            return # Don't save error results
+
+        db = SessionLocal()
+        try:
+            # 1. Create Session Record
+            new_session = DBSession(
+                user_id=user_id,
+                timestamp=datetime.utcnow(),
+                theme=question_data['theme'],
+                topic=question_data['topic'],
+                subtopic=question_data.get('subtopic'),
+                difficulty="easy", # Default for now
+                language="Russian"
+            )
+            db.add(new_session)
+            db.commit()
+            db.refresh(new_session)
+
+            # 2. Create Result Record
+            new_result = Result(
+                session_id=new_session.id,
+                original_question=question_data['question_text'],
+                question_english_translation=analysis_result.get('original_question_english', ''),
+                student_transcription=analysis_result.get('transcription', ''),
+                student_translation=analysis_result.get('translation', ''),
+                score=int(analysis_result.get('score', 0)),
+                feedback_json=analysis_result
+            )
+            db.add(new_result)
+            db.commit()
+        except Exception as e:
+            print(f"Error saving result to DB: {e}")
+            db.rollback()
+        finally:
+            db.close()
+
+    # --- Core Game Logic ---
     def generate_new_question(self):
         """
         Generates a new question, its audio, and returns relevant details.

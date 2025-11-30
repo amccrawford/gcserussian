@@ -5,12 +5,11 @@ import sounddevice as sd
 import soundfile as sf
 import json
 import time
-from data_loaders import ThemeLoader, VocabularyLoader
-from question_generator import QuestionGenerator
-from tts_module import TTSGenerator
+import tempfile # Added for temporary file cleanup
+from services import GameEngine # Import GameEngine
 from audio_input import AudioRecorder
-from analysis_module import ResponseAnalyzer
 
+# Temporary function for CLI audio playback
 def play_audio(file_path):
     """Plays an audio file using sounddevice."""
     try:
@@ -25,12 +24,8 @@ def main():
 
     # Initialize modules
     try:
-        theme_loader = ThemeLoader("themes.json")
-        vocab_loader = VocabularyLoader("vocab.json")
-        question_gen = QuestionGenerator(model_name="gemini-2.5-flash")
-        tts_gen = TTSGenerator(model_name="gemini-2.5-flash-preview-tts")
+        game_engine = GameEngine() # Use the new GameEngine
         recorder = AudioRecorder()
-        analyzer = ResponseAnalyzer(model_name="gemini-2.5-flash")
     except Exception as e:
         print(f"Initialization Error: {e}")
         return
@@ -38,111 +33,96 @@ def main():
     print("Initialization Complete. Starting Exam Session.\n")
 
     while True:
-        print("-" * 50)
-        # 1. Context Selection
-        theme, topic, subtopic, topic_data = theme_loader.get_random_theme_topic_subtopic()
-        print(f"Context: {theme} -> {topic} -> {subtopic}")
-
-        # 2. Vocabulary Selection
-        vocab_subset = vocab_loader.get_contextual_words(
-            theme, topic, subtopic, topic_data=topic_data, count=5
-        )
-        # print(f"Target Vocabulary: {[v['russian'] for v in vocab_subset]}") 
-
-        # 3. Generate Question
-        print("Generating question...")
+        question_data = None
+        student_response_path = None
         try:
-            question_text = question_gen.generate_question(
-                theme=theme, 
-                topic=topic, 
-                subtopic=subtopic, 
-                language="Russian",
-                vocabulary=vocab_subset,
-                difficulty_level="easy" # Default to easy for now
+            print("-" * 50)
+            # 1. Generate Question
+            print("Generating question...")
+            question_data = game_engine.generate_new_question()
+            
+            question_text = question_data["question_text"]
+            question_audio_path = question_data["question_audio_path"]
+            theme = question_data["theme"]
+            topic = question_data["topic"]
+            examiner_voice = question_data["examiner_voice"]
+
+            print(f"Context: {theme} -> {topic} -> {question_data['subtopic']}")
+            print(f"\nExaminer ({examiner_voice}) is speaking...")
+            
+            # 2. Play TTS audio
+            play_audio(question_audio_path)
+
+            # Interaction Menu Loop
+            while True:
+                print("\nOptions:")
+                print("1. Hear question again")
+                print("2. See question text")
+                print("3. Answer (Record)")
+                print("4. Skip this question")
+                print("q. Quit")
+                
+                choice = input("Select an option: ").strip().lower()
+                
+                if choice == '1':
+                    print("\nReplaying audio...")
+                    play_audio(question_audio_path)
+                elif choice == '2':
+                    print(f"\nQuestion: {question_text}")
+                elif choice == '3':
+                    break
+                elif choice == '4':
+                    print("Skipping...")
+                    break # Breaks inner loop, effectively skipping to next iteration of outer loop
+                elif choice == 'q':
+                    print("Exiting session.")
+                    sys.exit(0)
+                else:
+                    print("Invalid option. Please try again.")
+            
+            if choice == '4':
+                continue
+
+            # 3. Student Response
+            student_response_path = "student_response.wav" # This will be the temporary file
+            recorder.record_audio_manual(student_response_path)
+
+            # 4. Analysis
+            print("\nAnalyzing your response...")
+            theme_context = f"{theme} - {topic}"
+            analysis = game_engine.analyze_student_response(
+                original_question=question_text,
+                theme_context=theme_context,
+                student_audio_path=student_response_path,
+                target_language="Russian"
             )
-        except Exception as e:
-            print(f"Error generating question: {e}")
-            continue
-        
-        if not question_text:
-            print("Failed to generate question. Retrying...")
-            continue
 
-        # 4. TTS & Playback
-        voices = ["Puck", "Charon", "Kore", "Fenrir", "Aoede", "Zephyr"]
-        selected_voice = random.choice(voices)
-        print(f"\nExaminer ({selected_voice}) is speaking...")
-        audio_file = "current_question.wav"
-        
-        try:
-            audio_bytes = tts_gen.generate_audio(question_text, voice_name=selected_voice)
-            with open(audio_file, "wb") as f:
-                f.write(audio_bytes)
-            play_audio(audio_file)
-        except Exception as e:
-            print(f"TTS Error: {e}")
-            print(f"Examiner (Text only): {question_text}")
-
-        # Interaction Menu Loop
-        while True:
-            print("\nOptions:")
-            print("1. Hear question again")
-            print("2. See question text")
-            print("3. Answer (Record)")
-            print("4. Skip this question")
-            print("q. Quit")
-            
-            choice = input("Select an option: ").strip().lower()
-            
-            if choice == '1':
-                print("\nReplaying audio...")
-                play_audio(audio_file)
-            elif choice == '2':
-                print(f"\nQuestion: {question_text}")
-            elif choice == '3':
-                break
-            elif choice == '4':
-                print("Skipping...")
-                break # Breaks inner loop, effectively skipping to next iteration of outer loop
-            elif choice == 'q':
-                print("Exiting session.")
-                sys.exit(0)
+            # 5. Display Results
+            if "error" in analysis:
+                print(f"Analysis Error: {analysis['error']}")
             else:
-                print("Invalid option. Please try again.")
-        
-        if choice == '4':
-            continue
+                print("\n" + "="*20 + " FEEDBACK " + "="*20)
+                print(f"Examiner Question (Russian): {question_text}")
+                print(f"Examiner Question (English): {analysis.get('original_question_english', 'N/A')}")
+                print("-" * 20)
+                print(f"Your Response (Transcription): {analysis.get('transcription', 'N/A')}")
+                print(f"Your Response (Translation):   {analysis.get('translation', 'N/A')}")
+                print("-" * 20)
+                print(f"Score: {analysis.get('score', 'N/A')}/10")
+                print(f"Feedback: {analysis.get('feedback', 'N/A')}")
+                print("="*50)
 
-        # 5. Student Response
-        response_file = "student_response.wav"
-        recorder.record_audio_manual(response_file)
-
-        # 6. Analysis
-        print("\nAnalyzing your response...")
-        analysis = analyzer.analyze_response(
-            original_question=question_text,
-            theme_context=f"{theme} - {topic}",
-            audio_file_path=response_file,
-            target_language="Russian"
-        )
-
-        # 7. Display Results
-        if "error" in analysis:
-            print(f"Analysis Error: {analysis['error']}")
-        else:
-            print("\n" + "="*20 + " FEEDBACK " + "="*20)
-            print(f"Examiner Question (Russian): {question_text}")
-            print(f"Examiner Question (English): {analysis.get('original_question_english', 'N/A')}")
-            print("-" * 20)
-            print(f"Your Response (Transcription): {analysis.get('transcription', 'N/A')}")
-            print(f"Your Response (Translation):   {analysis.get('translation', 'N/A')}")
-            print("-" * 20)
-            print(f"Score: {analysis.get('score', 'N/A')}/10")
-            print(f"Feedback: {analysis.get('feedback', 'N/A')}")
-            print("="*50)
-
-        # 8. Loop
-        input("\nPress Enter to continue...")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+        finally:
+            # Clean up temporary audio files
+            if question_data and "question_audio_path" in question_data and os.path.exists(question_data["question_audio_path"]):
+                os.remove(question_data["question_audio_path"])
+            if student_response_path and os.path.exists(student_response_path):
+                os.remove(student_response_path)
+            
+            # 6. Loop
+            input("\nPress Enter to continue...")
 
 if __name__ == "__main__":
     main()

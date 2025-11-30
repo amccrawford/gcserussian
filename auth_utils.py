@@ -5,7 +5,7 @@ def get_password_hash(password: str) -> str:
     hashed_bytes = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     return hashed_bytes.decode('utf-8')
 
-# Note: verify_password is removed for now due to passlib compatibility issues.
-# If full passlib functionality is required, this issue needs further investigation.
-# def verify_password(plain_password, hashed_password):
-#     return pwd_context.verify(plain_password, hashed_password)
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verifies a password against a bcrypt hash."""
+    # bcrypt.checkpw requires bytes
+    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
