@@ -16,7 +16,14 @@ if DATABASE_URL.startswith("postgres://"):
 # Configure connect_args only for SQLite
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 
-engine = create_engine(DATABASE_URL, connect_args=connect_args)
+# Add pool settings to prevent connection drops (especially for PostgreSQL)
+engine_kwargs = {
+    "connect_args": connect_args,
+    "pool_pre_ping": True,
+    "pool_recycle": 1800
+}
+
+engine = create_engine(DATABASE_URL, **engine_kwargs)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db():
